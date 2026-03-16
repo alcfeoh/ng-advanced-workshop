@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country} from './types';
 import {CountryService} from './country.service';
-import {FormControl} from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-exercise2',
-  templateUrl: './exercise2.component.html',
-  styleUrls: ['./exercise2.component.css']
+    selector: 'app-exercise2',
+    templateUrl: './exercise2.component.html',
+    styleUrls: ['./exercise2.component.css'],
+    imports: [RouterLink, NgIf, ReactiveFormsModule, NgFor, AsyncPipe]
 })
 export class Exercise2Component {
 

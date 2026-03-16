@@ -1,9 +1,7 @@
 import {Directive, HostBinding, HostListener, Input} from '@angular/core';
 import {Observable} from 'rxjs';
 
-@Directive({
-  selector: '[action][textWhenDone]'
-})
+@Directive({ selector: '[action][textWhenDone]' })
 export class StateButtonDirective<T> {
 
   @Input()

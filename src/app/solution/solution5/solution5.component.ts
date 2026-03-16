@@ -3,11 +3,14 @@ import {Observable, of, Subject} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
 import {switchMap} from 'rxjs/operators';
+import { AutofilterDropdownComponent } from './autofilter-dropdown/autofilter-dropdown.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-solution5',
-  templateUrl: './solution5.component.html',
-  styleUrls: ['./solution5.component.css']
+    selector: 'app-solution5',
+    templateUrl: './solution5.component.html',
+    styleUrls: ['./solution5.component.css'],
+    imports: [AutofilterDropdownComponent, JsonPipe]
 })
 export class Solution5Component {
 

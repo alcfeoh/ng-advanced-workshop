@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'highlight'
-})
+@Pipe({ name: 'highlight' })
 export class HighlightPipe implements PipeTransform {
 
   transform(value: string = "", strToHighlight: string = ''): string {

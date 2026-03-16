@@ -2,11 +2,14 @@ import { Component } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
+import { RouterLink } from '@angular/router';
+import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-exercise3',
-  templateUrl: './exercise3.component.html',
-  styleUrls: ['./exercise3.component.css']
+    selector: 'app-exercise3',
+    templateUrl: './exercise3.component.html',
+    styleUrls: ['./exercise3.component.css'],
+    imports: [RouterLink, NgIf, NgFor, AsyncPipe, TitleCasePipe]
 })
 export class Exercise3Component {
 

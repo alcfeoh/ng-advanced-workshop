@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country, State} from './types';
-import {FormControl} from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {CountryService} from './country.service';
 import {map, withLatestFrom} from 'rxjs/operators';
+import { RouterLink } from '@angular/router';
+import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { HighlightPipe } from '../solution/solution3/highlight.pipe';
 
 @Component({
-  selector: 'app-exercise4',
-  templateUrl: './exercise4.component.html',
-  styleUrls: ['./exercise4.component.css']
+    selector: 'app-exercise4',
+    templateUrl: './exercise4.component.html',
+    styleUrls: ['./exercise4.component.css'],
+    imports: [RouterLink, ReactiveFormsModule, NgIf, NgFor, AsyncPipe, TitleCasePipe, HighlightPipe]
 })
 export class Exercise4Component {
 

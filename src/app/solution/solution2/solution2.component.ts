@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import {Observable, switchMap} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
-import {FormControl} from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-solution2',
-  templateUrl: './solution2.component.html',
-  styleUrls: ['./solution2.component.css']
+    selector: 'app-solution2',
+    templateUrl: './solution2.component.html',
+    styleUrls: ['./solution2.component.css'],
+    imports: [NgIf, ReactiveFormsModule, NgFor, AsyncPipe, TitleCasePipe]
 })
 export class Solution2Component {
 
