@@ -1,11 +1,15 @@
 <h2>Solution 1</h2>
 <h2>Result</h2>
-<div *ngIf="countries$ | async as countries">
-  <div>Select one of {{countries.length}} countries:</div>
-  <select [formControl]="countryDropdown">
-    <option *ngFor="let country of countries" [value]="country.id">
-      {{country.description}}
-    </option>
-  </select>
-  <div>Current value: {{countryDropdown.value}}</div>
-</div>
+@if (countries$ | async; as countries) {
+  <div>
+    <div>Select one of {{countries.length}} countries:</div>
+    <select [formControl]="countryDropdown">
+      @for (country of countries; track country) {
+        <option [value]="country.id">
+          {{country.description}}
+        </option>
+      }
+    </select>
+    <div>Current value: {{countryDropdown.value}}</div>
+  </div>
+}

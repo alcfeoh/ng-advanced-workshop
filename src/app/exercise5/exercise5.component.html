@@ -9,26 +9,34 @@
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/5">http://localhost:4200/solution/5</a> </h4>
 <hr>
-<h2>Result</h2>
-<div >
-  <div class="dropdown">
-    <input type="text" class="dropbtn" [formControl]="countryControl"
-           placeholder="Enter country name" >
-    <div class="dropdown-content" *ngIf="countries$ | async as countries">
-      <span *ngFor="let country of countries" (click)="updateStates(country)"
-            [innerHTML]="country.description | highlight: countryControl.value">
-      </span>
+  <h2>Result</h2>
+  <div >
+    <div class="dropdown">
+      <input type="text" class="dropbtn" [formControl]="countryControl"
+        placeholder="Enter country name" >
+      @if (countries$ | async; as countries) {
+        <div class="dropdown-content">
+          @for (country of countries; track country) {
+            <span (click)="updateStates(country)"
+              [innerHTML]="country.description | highlight: countryControl.value">
+            </span>
+          }
+        </div>
+      }
     </div>
   </div>
-</div>
-<div >
-  <div class="dropdown">
-    <input type="text" class="dropbtn" [formControl]="stateControl"
-           placeholder="Enter your state">
-    <div class="dropdown-content" *ngIf="states$ | async as states">
-      <span *ngFor="let s of states" (click)="stateControl.setValue(s.description)"
-            [innerHTML]="s.description | titlecase | highlight: stateControl.value">
-      </span>
+  <div >
+    <div class="dropdown">
+      <input type="text" class="dropbtn" [formControl]="stateControl"
+        placeholder="Enter your state">
+      @if (states$ | async; as states) {
+        <div class="dropdown-content">
+          @for (s of states; track s) {
+            <span (click)="stateControl.setValue(s.description)"
+              [innerHTML]="s.description | titlecase | highlight: stateControl.value">
+            </span>
+          }
+        </div>
+      }
     </div>
   </div>
-</div>

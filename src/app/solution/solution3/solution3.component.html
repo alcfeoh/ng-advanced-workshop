@@ -3,19 +3,27 @@
 <div >
   <div class="dropdown">
     <input type="text" class="dropbtn" [formControl]="countryControl"
-           placeholder="Enter country name" >
-    <div class="dropdown-content" *ngIf="countries$ | async as countries">
-      <span *ngFor="let country of countries" (click)="updateStates(country)"
+      placeholder="Enter country name" >
+    @if (countries$ | async; as countries) {
+      <div class="dropdown-content">
+        @for (country of countries; track country) {
+          <span (click)="updateStates(country)"
             [innerHTML]="country.description | highlight: countryControl.value">
-      </span>
-    </div>
+          </span>
+        }
+      </div>
+    }
   </div>
 </div>
-<div *ngIf="states$ | async as states">
-  <div class="dropdown">
-    <input type="text" class="dropbtn" [value]="state?.description" [disabled]="states.length == 0" placeholder="Enter your state">
-    <div class="dropdown-content">
-      <span *ngFor="let s of states" (click)="state = s">{{s.description | titlecase}}</span>
+@if (states$ | async; as states) {
+  <div>
+    <div class="dropdown">
+      <input type="text" class="dropbtn" [value]="state?.description" [disabled]="states.length == 0" placeholder="Enter your state">
+      <div class="dropdown-content">
+        @for (s of states; track s) {
+          <span (click)="state = s">{{s.description | titlecase}}</span>
+        }
+      </div>
     </div>
   </div>
-</div>
+}

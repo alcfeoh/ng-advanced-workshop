@@ -1,23 +1,31 @@
 <h2>Solution 2</h2>
 <h2>Result</h2>
-<div *ngIf="countries$ | async as countries">
-  <div>Select one of {{countries.length}} countries:</div>
-  <select [formControl]="countryDropdown">
-    <option *ngFor="let country of countries" [value]="country.id">
-      {{country.description}}
-    </option>
-  </select>
-  <div>Current value: {{countryDropdown.value}}</div>
-</div>
-<div *ngIf="states$ | async as states">
-  <ng-container *ngIf="states.length > 0">
-    <div>Select one of {{states.length}} states/provinces:</div>
-    <select [formControl]="statesDropdown" [disabled]="states.length == 0">
-      <option value="">Select...</option>
-      <option *ngFor="let state of states" [value]="state.code">
-        {{state.description | titlecase}}
-      </option>
+@if (countries$ | async; as countries) {
+  <div>
+    <div>Select one of {{countries.length}} countries:</div>
+    <select [formControl]="countryDropdown">
+      @for (country of countries; track country) {
+        <option [value]="country.id">
+          {{country.description}}
+        </option>
+      }
     </select>
-    <div>Current value: {{statesDropdown?.value}}</div>
-  </ng-container>
-</div>
+    <div>Current value: {{countryDropdown.value}}</div>
+  </div>
+}
+@if (states$ | async; as states) {
+  <div>
+    @if (states.length > 0) {
+      <div>Select one of {{states.length}} states/provinces:</div>
+      <select [formControl]="statesDropdown" [disabled]="states.length == 0">
+        <option value="">Select...</option>
+        @for (state of states; track state) {
+          <option [value]="state.code">
+            {{state.description | titlecase}}
+          </option>
+        }
+      </select>
+      <div>Current value: {{statesDropdown?.value}}</div>
+    }
+  </div>
+}

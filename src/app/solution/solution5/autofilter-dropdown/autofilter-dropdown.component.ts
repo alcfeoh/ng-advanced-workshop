@@ -3,14 +3,14 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {DropdownOption} from '../types';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { HighlightPipe } from '../../solution3/highlight.pipe';
 
 @Component({
     selector: 'app-autofilter-dropdown',
     templateUrl: './autofilter-dropdown.component.html',
     styleUrls: ['./autofilter-dropdown.component.css'],
-    imports: [ReactiveFormsModule, NgIf, NgFor, AsyncPipe, HighlightPipe]
+    imports: [ReactiveFormsModule, AsyncPipe, HighlightPipe]
 })
 export class AutofilterDropdownComponent<T extends DropdownOption> implements OnInit {
 

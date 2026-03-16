@@ -3,22 +3,26 @@
 <div >
   <div class="dropdown">
     <input type="text" class="dropbtn" [formControl]="countryControl"
-           placeholder="Enter country name" >
+      placeholder="Enter country name" >
     <div class="dropdown-content">
-      <span *ngFor="let country of countries$ | async" (click)="updateStates(country)"
-            [innerHTML]="country.description | highlight: countryControl.value">
-      </span>
+      @for (country of countries$ | async; track country) {
+        <span (click)="updateStates(country)"
+          [innerHTML]="country.description | highlight: countryControl.value">
+        </span>
+      }
     </div>
   </div>
 </div>
 <div >
   <div class="dropdown">
     <input type="text" class="dropbtn" [formControl]="stateControl"
-           placeholder="Enter your state">
+      placeholder="Enter your state">
     <div class="dropdown-content">
-      <span *ngFor="let s of states$ | async" (click)="stateControl.setValue(s.description)"
-            [innerHTML]="s.description | titlecase | highlight: stateControl.value">
-      </span>
+      @for (s of states$ | async; track s) {
+        <span (click)="stateControl.setValue(s.description)"
+          [innerHTML]="s.description | titlecase | highlight: stateControl.value">
+        </span>
+      }
     </div>
   </div>
 </div>

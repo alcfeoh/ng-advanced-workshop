@@ -5,14 +5,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {CountryService} from './country.service';
 import {map, switchMap, tap} from 'rxjs/operators';
 import { RouterLink } from '@angular/router';
-import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { HighlightPipe } from '../solution/solution3/highlight.pipe';
 
 @Component({
     selector: 'app-exercise5',
     templateUrl: './exercise5.component.html',
     styleUrls: ['./exercise5.component.css'],
-    imports: [RouterLink, ReactiveFormsModule, NgIf, NgFor, AsyncPipe, TitleCasePipe, HighlightPipe]
+    imports: [RouterLink, ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
 })
 export class Exercise5Component {
 

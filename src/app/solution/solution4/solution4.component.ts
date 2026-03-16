@@ -4,14 +4,14 @@ import {Country, State} from './types';
 import {CountryService} from './country.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {map, switchMap} from 'rxjs/operators';
-import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { HighlightPipe } from '../solution3/highlight.pipe';
 
 @Component({
     selector: 'app-solution3',
     templateUrl: './solution4.component.html',
     styleUrls: ['./solution4.component.css'],
-    imports: [ReactiveFormsModule, NgFor, AsyncPipe, TitleCasePipe, HighlightPipe]
+    imports: [ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
 })
 export class Solution4Component {
 
