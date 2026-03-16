@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ng-advanced-workshop:build:production"
+              "buildTarget": "ng-advanced-workshop:build:production"
             },
             "development": {
-              "browserTarget": "ng-advanced-workshop:build:development"
+              "buildTarget": "ng-advanced-workshop:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-advanced-workshop:build"
+            "buildTarget": "ng-advanced-workshop:build"
           }
         },
         "test": {
