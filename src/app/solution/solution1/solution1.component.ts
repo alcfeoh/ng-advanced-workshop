@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {CountryService} from './country.service';
 import {Observable} from 'rxjs';
 import {Country} from './types';
@@ -9,7 +9,6 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-solution1',
     templateUrl: './solution1.component.html',
     styleUrls: ['./solution1.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormField, AsyncPipe]
 })
 export class Solution1Component {

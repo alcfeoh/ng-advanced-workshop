@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { form, FormField } from '@angular/forms/signals';
 
@@ -6,7 +6,6 @@ import { form, FormField } from '@angular/forms/signals';
     selector: 'app-exercise1',
     templateUrl: './exercise1.component.html',
     styleUrls: ['./exercise1.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterLink, FormField]
 })
 export class Exercise1Component {
