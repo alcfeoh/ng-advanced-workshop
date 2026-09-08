@@ -7,6 +7,7 @@
   <li>Update the code in <code>app/exercise1</code> so that our component loads its list of countries from <code>http://localhost:3000/countries</code></li>
   <li>Display the total number of countries in the corresponding <code>div</code></li>
   <li>Selecting a country should result in the <code>id</code> of the country being set as the dropdown value</li>
+  <li>Use Signal Forms (<code>form()</code> from <code>@angular/forms/signals</code> and <code>[formField]</code>) to bind the country dropdown — do not use <code>FormControl</code></li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/1">http://localhost:4200/solution/1</a> </h4>
 <hr>
@@ -14,10 +15,10 @@
 <!-- Edit the code down below to implement the requested features -->
 <div>
   <div>Select one of 0 countries:</div>
-  <select>
-    <option>
+  <select [formField]="countryForm.countryId">
+    <option value="US">
       United States
     </option>
   </select>
-  <div>Current value: US</div>
+  <div>Current value: {{ countryForm.countryId().value() }}</div>
 </div>

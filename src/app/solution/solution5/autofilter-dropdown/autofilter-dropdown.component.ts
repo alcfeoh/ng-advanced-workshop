@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { HighlightPipe } from '../../solution3/highlight.pipe';
     selector: 'app-autofilter-dropdown',
     templateUrl: './autofilter-dropdown.component.html',
     styleUrls: ['./autofilter-dropdown.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, AsyncPipe, HighlightPipe]
 })
 export class AutofilterDropdownComponent<T extends DropdownOption> implements OnInit {

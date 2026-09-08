@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {timer} from 'rxjs';
 import { StateButtonComponent } from './state-button.component';
 
@@ -6,6 +6,7 @@ import { StateButtonComponent } from './state-button.component';
     selector: 'app-solution7',
     templateUrl: './solution7.component.html',
     styleUrls: ['./solution7.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [StateButtonComponent]
 })
 export class Solution7Component {

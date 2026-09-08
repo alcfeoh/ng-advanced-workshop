@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
@@ -9,6 +9,7 @@ import { AsyncPipe, TitleCasePipe } from '@angular/common';
     selector: 'app-exercise3',
     templateUrl: './exercise3.component.html',
     styleUrls: ['./exercise3.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterLink, AsyncPipe, TitleCasePipe]
 })
 export class Exercise3Component {

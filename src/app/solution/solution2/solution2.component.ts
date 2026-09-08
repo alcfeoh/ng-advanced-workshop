@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {Observable, switchMap} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
@@ -9,6 +9,7 @@ import { AsyncPipe, TitleCasePipe } from '@angular/common';
     selector: 'app-solution2',
     templateUrl: './solution2.component.html',
     styleUrls: ['./solution2.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, AsyncPipe, TitleCasePipe]
 })
 export class Solution2Component {

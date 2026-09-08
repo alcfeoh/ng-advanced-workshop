@@ -1,5 +1,7 @@
 # NgAdvancedWorkshop
 
+This workshop app targets **Angular 22** (TypeScript 6).
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -12,6 +14,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Here are the Angular concepts covered during this workshop:
 - #### Exercise 1 
+  + Signal Forms: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code> on the country dropdown, and FieldTree values (e.g. <code>countryForm.countryId().value()</code>)
   + <code>async</code> pipe and the no-subscription pattern
   + Template microsyntax variables for structural directives
   + Template reference variables (hashtag syntax)

@@ -13,7 +13,7 @@
   @if (countries$ | async; as countries) {
     <div>
       <div class="dropdown">
-        <input type="text" class="dropbtn" [value]="country?.description" placeholder="Enter country name">
+        <input type="text" class="dropbtn" [value]="$safeNavigationMigration(country?.description)" placeholder="Enter country name">
         <div class="dropdown-content">
           @for (country of countries; track country) {
             <span (click)="updateStates(country)">{{country.description}}</span>
@@ -25,7 +25,7 @@
   @if (states$ | async; as states) {
     <div>
       <div class="dropdown">
-        <input type="text" class="dropbtn" [value]="state?.description" [disabled]="states.length == 0" placeholder="Enter your state">
+        <input type="text" class="dropbtn" [value]="$safeNavigationMigration(state?.description)" [disabled]="states.length == 0" placeholder="Enter your state">
         <div class="dropdown-content">
           @for (s of states; track s) {
             <span (click)="state = s">{{s.description | titlecase}}</span>
