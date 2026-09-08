@@ -32,7 +32,7 @@
   @if (states$ | async; as states) {
     <div>
       <div class="dropdown">
-        <input type="text" class="dropbtn" [value]="state?.description" [disabled]="states.length == 0" placeholder="Enter your state">
+        <input type="text" class="dropbtn" [value]="$safeNavigationMigration(state?.description)" [disabled]="states.length == 0" placeholder="Enter your state">
         <div class="dropdown-content">
           @for (s of states; track s) {
             <span (click)="state = s">{{s.description | titlecase}}</span>

@@ -1,7 +1,7 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { AppRoutingModule } from './app/app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 bootstrapApplication(AppComponent, {
     providers: [
         provideZoneChangeDetection(),importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule),
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ]
 })
   .catch(err => console.error(err));
