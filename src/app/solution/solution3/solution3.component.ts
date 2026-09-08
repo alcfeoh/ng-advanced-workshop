@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
@@ -11,7 +11,6 @@ import { HighlightPipe } from './highlight.pipe';
     selector: 'app-solution3',
     templateUrl: './solution3.component.html',
     styleUrls: ['./solution3.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
 })
 export class Solution3Component {

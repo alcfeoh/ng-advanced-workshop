@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
@@ -10,7 +10,6 @@ import { JsonPipe } from '@angular/common';
     selector: 'app-solution5',
     templateUrl: './solution5.component.html',
     styleUrls: ['./solution5.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AutofilterDropdownComponent, JsonPipe]
 })
 export class Solution5Component {

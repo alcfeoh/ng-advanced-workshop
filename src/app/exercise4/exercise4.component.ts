@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country, State} from './types';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +12,6 @@ import { HighlightPipe } from '../solution/solution3/highlight.pipe';
     selector: 'app-exercise4',
     templateUrl: './exercise4.component.html',
     styleUrls: ['./exercise4.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterLink, ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
 })
 export class Exercise4Component {

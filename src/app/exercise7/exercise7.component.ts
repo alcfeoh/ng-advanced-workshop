@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {timer} from 'rxjs';
 import { RouterLink } from '@angular/router';
 
@@ -6,7 +6,6 @@ import { RouterLink } from '@angular/router';
     selector: 'app-exercise7',
     templateUrl: './exercise7.component.html',
     styleUrls: ['./exercise7.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterLink]
 })
 export class Exercise7Component {
