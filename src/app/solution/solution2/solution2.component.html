@@ -3,21 +3,21 @@
 @if (countries$ | async; as countries) {
   <div>
     <div>Select one of {{countries.length}} countries:</div>
-    <select [formControl]="countryDropdown">
+    <select [formField]="countryForm.countryId">
       @for (country of countries; track country) {
         <option [value]="country.id">
           {{country.description}}
         </option>
       }
     </select>
-    <div>Current value: {{countryDropdown.value}}</div>
+    <div>Current value: {{ countryForm.countryId().value() }}</div>
   </div>
 }
 @if (states$ | async; as states) {
   <div>
     @if (states.length > 0) {
       <div>Select one of {{states.length}} states/provinces:</div>
-      <select [formControl]="statesDropdown" [disabled]="states.length == 0">
+      <select [formField]="countryForm.stateCode">
         <option value="">Select...</option>
         @for (state of states; track state) {
           <option [value]="state.code">
@@ -25,7 +25,7 @@
           </option>
         }
       </select>
-      <div>Current value: {{statesDropdown?.value}}</div>
+      <div>Current value: {{ countryForm.stateCode().value() }}</div>
     }
   </div>
 }

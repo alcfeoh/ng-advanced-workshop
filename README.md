@@ -19,7 +19,8 @@ Here are the Angular concepts covered during this workshop:
   + <code>tap</code> operator from RxJs
   
 - #### Exercise 2
-  + Reactive programming with Observable swapping
+  + Signal Forms for the country and state dropdowns: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code>, and FieldTree values
+  + Country → states still uses RxJS <code>switchMap</code> (Observable swapping) by turning the country field value into an Observable with <code>toObservable</code>
   + <code>map</code> operator from RxJs
   + <code>ng-container</code> as an empty DOM wrapper for content to show/hide
   
