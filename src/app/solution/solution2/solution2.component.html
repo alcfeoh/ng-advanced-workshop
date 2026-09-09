@@ -18,7 +18,7 @@
     <div>Select one of {{states.value().length}} states/provinces:</div>
     <select [formField]="countryForm.stateCode">
       <option value="">Select...</option>
-      @for (state of states.value(); track state.code) {
+      @for (state of states.value(); track state.id) {
         <option [value]="state.code">
           {{state.description | titlecase}}
         </option>
