@@ -7,7 +7,7 @@
   <li>Display the total number of states (for the selected country) in the corresponding <code>div</code></li>
   <li>States should be displayed in alphabetical order and using title case</li>
   <li>Selecting a state should result in the <code>code</code> of the state being set as the dropdown value</li>
-  <li>Use Signal Forms (<code>form()</code> from <code>@angular/forms/signals</code> and <code>[formField]</code>) to bind both dropdowns — do not use <code>FormControl</code>. Keep the RxJS <code>switchMap</code> lesson: country selection should still swap the states Observable (you can turn the country FieldTree value into an Observable with <code>toObservable</code>)</li>
+  <li>Use Signal Forms (<code>form()</code> from <code>@angular/forms/signals</code> and <code>[formField]</code>) to bind both dropdowns — do not use <code>FormControl</code>. Load states with <code>effect()</code> that reads the country FieldTree value (do not use <code>switchMap</code> / <code>toObservable</code> for this)</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/2">http://localhost:4200/solution/2</a> </h4>
 <hr>

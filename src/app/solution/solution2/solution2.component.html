@@ -13,19 +13,17 @@
     <div>Current value: {{ countryForm.countryId().value() }}</div>
   </div>
 }
-@if (states$ | async; as states) {
+@if (states().length > 0) {
   <div>
-    @if (states.length > 0) {
-      <div>Select one of {{states.length}} states/provinces:</div>
-      <select [formField]="countryForm.stateCode">
-        <option value="">Select...</option>
-        @for (state of states; track state) {
-          <option [value]="state.code">
-            {{state.description | titlecase}}
-          </option>
-        }
-      </select>
-      <div>Current value: {{ countryForm.stateCode().value() }}</div>
-    }
+    <div>Select one of {{states().length}} states/provinces:</div>
+    <select [formField]="countryForm.stateCode">
+      <option value="">Select...</option>
+      @for (state of states(); track state) {
+        <option [value]="state.code">
+          {{state.description | titlecase}}
+        </option>
+      }
+    </select>
+    <div>Current value: {{ countryForm.stateCode().value() }}</div>
   </div>
 }

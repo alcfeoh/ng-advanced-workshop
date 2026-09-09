@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Country} from './types';
 import {CountryService} from './country.service';
@@ -14,13 +14,13 @@ import { AsyncPipe } from '@angular/common';
 })
 export class Exercise2Component {
 
+  private service = inject(CountryService);
+
   countries$: Observable<Country[]> = this.service.getCountries();
 
   // Signal Forms model + FieldTree. Bind both <select>s with [formField].
-  // Drive states from the country field with RxJS switchMap (see solution 2).
+  // Drive states from the country field with effect() (see solution 2).
   countryModel = signal({ countryId: '', stateCode: '' });
   countryForm = form(this.countryModel);
-
-  constructor(private service: CountryService) { }
 
 }
