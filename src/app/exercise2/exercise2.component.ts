@@ -1,22 +1,23 @@
-import { Component } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Country} from './types';
+import { Component, inject, signal } from '@angular/core';
 import {CountryService} from './country.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-exercise2',
     templateUrl: './exercise2.component.html',
     styleUrls: ['./exercise2.component.css'],
-    imports: [RouterLink, ReactiveFormsModule, AsyncPipe]
+    imports: [RouterLink, FormField]
 })
 export class Exercise2Component {
 
-  countries$: Observable<Country[]> = this.service.getCountries();
-  countryDropdown = new FormControl<Country['id']>(null);
+  private service = inject(CountryService);
 
-  constructor(private service: CountryService) { }
+  countries = this.service.countries;
+
+  // Signal Forms model + FieldTree. Bind both <select>s with [formField].
+  // Drive states with httpResource whose params depend on the country field (see solution 2).
+  countryModel = signal({ countryId: '', stateCode: '' });
+  countryForm = form(this.countryModel);
 
 }

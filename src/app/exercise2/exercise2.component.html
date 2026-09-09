@@ -2,34 +2,35 @@
 <h3>Your mission is to connect the two following dropdowns so that the state/province dropdown gets populated with data from the selected country.</h3>
 <img src="assets/exercise2.gif" />
 <ol>
-  <li>Make sure that the state dropdown is disabled when no country is selected as well as when the selected country has no state information</li>
-  <li>Update the code in <code>app/exercise2</code> so that our component loads its list of states from <code>http://localhost:3000/states?countryCode=US</code> and use the right country code as a parameter</li>
+  <li>Make sure that the state dropdown is disabled when no country is selected as well as when the selected country has no state information. Do not bind <code>[disabled]</code> on a <code>[formField]</code> select — hide it when empty, or use <code>disabled()</code> from <code>@angular/forms/signals</code></li>
+  <li>Update the code in <code>app/exercise2</code> so that our component loads its list of states from <code>http://localhost:3000/states?countryCode=US</code> with an <code>httpResource</code> (or <code>resource</code>) whose URL/params depend on the selected country, and use the right country code as a parameter</li>
   <li>Display the total number of states (for the selected country) in the corresponding <code>div</code></li>
   <li>States should be displayed in alphabetical order and using title case</li>
   <li>Selecting a state should result in the <code>code</code> of the state being set as the dropdown value</li>
+  <li>Use Signal Forms (<code>form()</code> from <code>@angular/forms/signals</code> and <code>[formField]</code>) to bind both dropdowns — do not use <code>FormControl</code>. Read countries and states from resource signals in the template (no <code>async</code> pipe). Do not use <code>switchMap</code>, <code>toObservable</code>, or <code>effect()</code>+subscribe for this</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/2">http://localhost:4200/solution/2</a> </h4>
 <hr>
   <h2>Result</h2>
-  @if (countries$ | async; as countries) {
+  @if (countries.hasValue()) {
     <div>
-      <div>Select one of {{countries.length}} countries:</div>
-      <select [formControl]="countryDropdown">
-        @for (country of countries; track country) {
+      <div>Select one of {{countries.value().length}} countries:</div>
+      <select [formField]="countryForm.countryId">
+        @for (country of countries.value(); track country.id) {
           <option [value]="country.id">
             {{country.description}}
           </option>
         }
       </select>
-      <div>Current value: {{countryDropdown.value}}</div>
+      <div>Current value: {{ countryForm.countryId().value() }}</div>
     </div>
   }
   <div>
     <div>Select one of 0 states/provinces:</div>
-    <select #statesDropdown>
+    <select [formField]="countryForm.stateCode">
       <option>
         State or province
       </option>
     </select>
-    <div>Current value: {{statesDropdown.value}}</div>
+    <div>Current value: {{ countryForm.stateCode().value() }}</div>
   </div>

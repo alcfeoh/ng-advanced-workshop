@@ -19,8 +19,10 @@ Here are the Angular concepts covered during this workshop:
   + <code>tap</code> operator from RxJs
   
 - #### Exercise 2
-  + Reactive programming with Observable swapping
-  + <code>map</code> operator from RxJs
+  + Signal Forms for the country and state dropdowns: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code>, and FieldTree values
+  + <code>httpResource</code> for countries (template reads resource signals, no <code>async</code> pipe)
+  + Country → states with an <code>httpResource</code> whose URL/params depend on the country FieldTree value
+  + <code>inject()</code> instead of constructor DI
   + <code>ng-container</code> as an empty DOM wrapper for content to show/hide
   
 - #### Exercise 3

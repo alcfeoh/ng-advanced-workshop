@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { httpResource } from '@angular/common/http';
 import {Country} from './types';
 
 @Injectable({
@@ -8,13 +7,7 @@ import {Country} from './types';
 })
 export class CountryService {
 
-  private countries$: Observable<Country[]>;
-
-  constructor(private http: HttpClient) {
-    this.countries$ = http.get<Country[]>('http://localhost:3000/countries');
-  }
-
-  getCountries(): Observable<Country[]> {
-    return this.countries$;
-  }
+  countries = httpResource<Country[]>(() => 'http://localhost:3000/countries', {
+    defaultValue: [] as Country[],
+  });
 }
