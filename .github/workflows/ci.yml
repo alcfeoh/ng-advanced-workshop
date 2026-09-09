@@ -26,3 +26,6 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Unit tests
+        run: npm test -- --no-watch --no-progress
