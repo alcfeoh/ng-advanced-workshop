@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 
 import { Solution1Component } from './solution1.component';
-import { Country } from './types';
-
-const COUNTRIES: Country[] = [
-  { id: 'US', description: 'United States' },
-  { id: 'FR', description: 'France' },
-];
+import {
+  COUNTRIES,
+  COUNTRIES_URL,
+  flushAndStabilize,
+  hostText,
+  httpTestingProviders,
+  querySelect,
+  selectOption,
+} from '../test-utils';
 
 describe('Solution1Component', () => {
   let component: Solution1Component;
@@ -18,7 +20,7 @@ describe('Solution1Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Solution1Component],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: httpTestingProviders(),
     }).compileComponents();
 
     fixture = TestBed.createComponent(Solution1Component);
@@ -40,11 +42,9 @@ describe('Solution1Component', () => {
     expect(hostText(fixture)).not.toContain('Select one of');
     expect(fixture.nativeElement.querySelector('select')).toBeNull();
 
-    const countriesReq = httpTesting.expectOne('http://localhost:3000/countries');
+    const countriesReq = httpTesting.expectOne(COUNTRIES_URL);
     expect(countriesReq.request.method).toBe('GET');
-    countriesReq.flush(COUNTRIES);
-    await fixture.whenStable();
-    fixture.detectChanges();
+    await flushAndStabilize(fixture, countriesReq, COUNTRIES);
 
     expect(hostText(fixture)).toContain(`Select one of ${COUNTRIES.length} countries`);
 
@@ -55,33 +55,13 @@ describe('Solution1Component', () => {
       COUNTRIES.map((country) => country.description),
     );
 
-    selectOption(countrySelect, 'FR');
-    fixture.detectChanges();
-    TestBed.tick();
-
+    selectOption(fixture, countrySelect, 'FR');
     if (component.countryForm.countryId().value() !== 'FR') {
       component.countryForm.countryId().value.set('FR');
       fixture.detectChanges();
-      TestBed.tick();
     }
 
     expect(component.countryForm.countryId().value()).toBe('FR');
     expect(hostText(fixture)).toContain('Current value: FR');
   });
 });
-
-function hostText(fixture: ComponentFixture<unknown>): string {
-  return (fixture.nativeElement as HTMLElement).textContent ?? '';
-}
-
-function querySelect(fixture: ComponentFixture<unknown>): HTMLSelectElement {
-  const select = (fixture.nativeElement as HTMLElement).querySelector('select');
-  expect(select).not.toBeNull();
-  return select as HTMLSelectElement;
-}
-
-function selectOption(select: HTMLSelectElement, value: string): void {
-  select.value = value;
-  select.dispatchEvent(new Event('input', { bubbles: true }));
-  select.dispatchEvent(new Event('change', { bubbles: true }));
-}
