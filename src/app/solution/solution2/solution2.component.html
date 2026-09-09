@@ -1,10 +1,10 @@
 <h2>Solution 2</h2>
 <h2>Result</h2>
-@if (countries$ | async; as countries) {
+@if (countries.hasValue()) {
   <div>
-    <div>Select one of {{countries.length}} countries:</div>
+    <div>Select one of {{countries.value().length}} countries:</div>
     <select [formField]="countryForm.countryId">
-      @for (country of countries; track country) {
+      @for (country of countries.value(); track country.id) {
         <option [value]="country.id">
           {{country.description}}
         </option>
@@ -13,12 +13,12 @@
     <div>Current value: {{ countryForm.countryId().value() }}</div>
   </div>
 }
-@if (states().length > 0) {
+@if (states.hasValue() && states.value().length > 0) {
   <div>
-    <div>Select one of {{states().length}} states/provinces:</div>
+    <div>Select one of {{states.value().length}} states/provinces:</div>
     <select [formField]="countryForm.stateCode">
       <option value="">Select...</option>
-      @for (state of states(); track state) {
+      @for (state of states.value(); track state.code) {
         <option [value]="state.code">
           {{state.description | titlecase}}
         </option>
