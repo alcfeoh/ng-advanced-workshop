@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 
 import { Solution3Component } from './solution3.component';
+import { CountryService } from './country.service';
 import {
   COUNTRIES,
   COUNTRIES_URL,
@@ -92,7 +93,7 @@ describe('Solution3Component', () => {
     fixture.detectChanges();
 
     expect(component.countryForm.country().value()).toBe('France');
-    expect(component.selectedCountryId()).toBe('FR');
+    expect(TestBed.inject(CountryService).selectedCountryId()).toBe('FR');
     expect(queryInputs(fixture)[0].value).toBe('France');
 
     const statesReq = httpTesting.expectOne(statesUrl('FR'));

@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { httpResource } from '@angular/common/http';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
 import { form, FormField } from '@angular/forms/signals';
@@ -20,6 +19,7 @@ export class Solution3Component {
   countryForm = form(this.countryModel);
 
   countries = this.service.countries;
+  states = this.service.states;
 
   filteredCountries = computed(() => {
     const filter = this.countryForm.country().value().toLowerCase();
@@ -28,26 +28,11 @@ export class Solution3Component {
     );
   });
 
-  selectedCountryId = signal('');
   state = signal<State | undefined>(undefined);
-
-  states = httpResource<State[]>(
-    () => {
-      const countryId = this.selectedCountryId();
-      return countryId
-        ? { url: 'http://localhost:3000/states', params: { countryCode: countryId } }
-        : undefined;
-    },
-    {
-      defaultValue: [] as State[],
-      parse: (value) =>
-        [...(value as State[])].sort((a, b) => (a.description > b.description ? 1 : -1)),
-    },
-  );
 
   updateStates(country: Country) {
     this.countryForm.country().value.set(country.description);
-    this.selectedCountryId.set(country.id);
+    this.service.selectedCountryId.set(country.id);
     this.state.set(undefined);
   }
 }

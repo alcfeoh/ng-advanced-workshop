@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { httpResource } from '@angular/common/http';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
 import { form, FormField } from '@angular/forms/signals';
@@ -21,21 +20,16 @@ export class Exercise3Component {
   countryForm = form(this.countryModel);
 
   countries = this.service.countries;
+  states = this.service.states;
 
   // Filter with computed() from countryForm.country().value() + countries.value() (see solution 3).
   filteredCountries = computed(() => this.countries.value());
 
-  selectedCountryId = signal('');
   state = signal<State | undefined>(undefined);
-
-  // URL/params should depend on selectedCountryId (see solution 3).
-  states = httpResource<State[]>(() => undefined, {
-    defaultValue: [] as State[],
-  });
 
   updateStates(country: Country) {
     this.countryForm.country().value.set(country.description);
-    this.selectedCountryId.set(country.id);
+    this.service.selectedCountryId.set(country.id);
     this.state.set(undefined);
   }
 }
