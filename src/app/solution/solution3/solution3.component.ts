@@ -1,34 +1,43 @@
-import { Component } from '@angular/core';
-import {Observable} from 'rxjs';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {map, withLatestFrom} from 'rxjs/operators';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { form, FormField } from '@angular/forms/signals';
+import { TitleCasePipe } from '@angular/common';
 import { HighlightPipe } from './highlight.pipe';
 
 @Component({
     selector: 'app-solution3',
     templateUrl: './solution3.component.html',
     styleUrls: ['./solution3.component.css'],
-    imports: [ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
+    imports: [FormField, TitleCasePipe, HighlightPipe]
 })
 export class Solution3Component {
 
-  countries$: Observable<Country[]>;
-  states$: Observable<State[]>;
-  state: State;
-  countryControl = new FormControl<string>('');
+  private service = inject(CountryService);
 
-  constructor(private service: CountryService) {
-    this.countries$ = this.countryControl.valueChanges.pipe(
-      withLatestFrom(this.service.getCountries()),
-      map(([userInput, countries]) => countries.filter(c => c.description.toLowerCase().indexOf(userInput.toLowerCase()) !== -1))
+  // Form text follows the selected country, but typing can still override it to filter.
+  countryModel = linkedSignal(() => ({
+    country: this.service.selectedCountry()?.description ?? '',
+  }));
+  countryForm = form(this.countryModel);
+
+  countries = this.service.countries;
+  states = this.service.states;
+
+  filteredCountries = computed(() => {
+    const filter = this.countryForm.country().value().toLowerCase();
+    return this.countries.value().filter(
+      c => c.description.toLowerCase().indexOf(filter) !== -1
     );
-  }
+  });
+
+  // Reset the chosen state whenever the selected country changes.
+  state = linkedSignal({
+    source: () => this.service.selectedCountry(),
+    computation: () => undefined as State | undefined,
+  });
 
   updateStates(country: Country) {
-    this.countryControl.setValue(country.description);
-    this.states$ = this.service.getStatesFor(country.id);
+    this.service.selectedCountry.set(country);
   }
 }

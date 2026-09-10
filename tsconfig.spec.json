@@ -10,6 +10,7 @@
   "include": [
     "src/app/solution/solution1/solution1.component.spec.ts",
     "src/app/solution/solution2/solution2.component.spec.ts",
+    "src/app/solution/solution3/solution3.component.spec.ts",
     "src/app/solution/test-utils.ts",
     "src/**/*.d.ts"
   ],

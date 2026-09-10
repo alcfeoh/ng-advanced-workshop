@@ -37,6 +37,26 @@ export function querySelect(fixture: ComponentFixture<unknown>): HTMLSelectEleme
   return select;
 }
 
+export function queryInputs(fixture: ComponentFixture<unknown>): HTMLInputElement[] {
+  return Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('input'));
+}
+
+export function queryDropdownItems(fixture: ComponentFixture<unknown>): HTMLElement[] {
+  return Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.dropdown-content span'));
+}
+
+export function typeIn(
+  fixture: ComponentFixture<unknown>,
+  input: HTMLInputElement,
+  value: string,
+): void {
+  input.value = value;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+  // [formField] applies native input events during CD, not whenStable.
+  fixture.detectChanges();
+}
+
 export function selectOption(
   fixture: ComponentFixture<unknown>,
   select: HTMLSelectElement,
