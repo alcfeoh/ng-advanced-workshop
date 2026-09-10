@@ -35,10 +35,12 @@ Here are the Angular concepts covered during this workshop:
   + <code>inject()</code> instead of constructor DI
   
 - #### Exercise 4 
-  + <code>switchMap</code> operator from RxJs
-  + <code>combineLatest</code> operator from RxJs
-  + Using RxJs <code>Subject</code> to create action streams
-  + How to combine dynamic Observable streams that evolve over time
+  + Signal Forms for the country and state filters: <code>linkedSignal</code> models, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code> on both text inputs
+  + <code>computed()</code> to filter countries and states from the Signal Form fields and the resources
+  + Country → states with an <code>httpResource</code> on the service whose URL/params depend on a <code>computed()</code> <code>selectedCountryId</code>
+  + One selection write for country and for state: <code>linkedSignal</code> updates the filter text and clears the chosen state when the country changes
+  + Reusing a custom pipe with <code>innerHTML</code> to highlight matching text
+  + <code>inject()</code> instead of constructor DI
   
 - #### Exercise 5
     + Refactoring HTML templates and TypeScript code into reusable components

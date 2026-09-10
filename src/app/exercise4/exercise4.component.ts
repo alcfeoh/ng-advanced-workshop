@@ -1,36 +1,58 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import {Country, State} from './types';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {CountryService} from './country.service';
-import {map, withLatestFrom} from 'rxjs/operators';
+import { form, FormField } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { HighlightPipe } from '../solution/solution3/highlight.pipe';
 
 @Component({
     selector: 'app-exercise4',
     templateUrl: './exercise4.component.html',
     styleUrls: ['./exercise4.component.css'],
-    imports: [RouterLink, ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
+    imports: [RouterLink, FormField, TitleCasePipe, HighlightPipe]
 })
 export class Exercise4Component {
 
-  countries$: Observable<Country[]>;
-  states$!: Observable<State[]>;
-  state!: State;
-  countryControl = new FormControl<string>('');
+  private service = inject(CountryService);
 
-  constructor(private service: CountryService) {
-    this.countries$ = this.countryControl.valueChanges.pipe(
-      withLatestFrom(this.service.getCountries()),
-      map(([userInput, countries]) =>
-        countries.filter(c => c.description.toLowerCase().indexOf((userInput ?? "").toLowerCase()) !== -1))
+  // Form text follows the selected country, but typing can still override it to filter.
+  countryModel = linkedSignal(() => ({
+    country: this.service.selectedCountry()?.description ?? '',
+  }));
+  countryForm = form(this.countryModel);
+
+  countries = this.service.countries;
+  states = this.service.states;
+
+  filteredCountries = computed(() => {
+    const filter = this.countryForm.country().value().toLowerCase();
+    return this.countries.value().filter(
+      c => c.description.toLowerCase().indexOf(filter) !== -1
     );
-  }
+  });
+
+  // Reset the chosen state whenever the selected country changes.
+  selectedState = linkedSignal({
+    source: () => this.service.selectedCountry(),
+    computation: () => undefined as State | undefined,
+  });
+
+  // Signal Forms model + FieldTree. Bind the state <input> with [formField].
+  // Selecting a state is one write (selectedState). The filter text follows with linkedSignal.
+  stateModel = linkedSignal(() => ({
+    state: this.selectedState()?.description ?? '',
+  }));
+  stateForm = form(this.stateModel);
+
+  // Filter with computed() from stateForm.state().value() + states.value() (see solution 4).
+  filteredStates = computed(() => this.states.value());
 
   updateStates(country: Country) {
-    this.countryControl.setValue(country.description);
-    this.states$ = this.service.getStatesFor(country.id);
+    this.service.selectedCountry.set(country);
+  }
+
+  updateState(state: State) {
+    this.selectedState.set(state);
   }
 }

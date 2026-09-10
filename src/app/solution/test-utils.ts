@@ -15,6 +15,14 @@ export const US_STATES = [
   { id: 24, code: 'CA', countryCode: 'US', description: 'California' },
 ];
 
+export const CANADA = { id: 'CA', description: 'Canada' };
+
+export const CA_STATES = [
+  { id: 1, code: 'AB', countryCode: 'CA', description: 'Alberta' },
+  { id: 104, code: 'ON', countryCode: 'CA', description: 'Ontario' },
+  { id: 120, code: 'QC', countryCode: 'CA', description: 'Quebec' },
+];
+
 export function httpTestingProviders() {
   return [provideHttpClient(), provideHttpClientTesting()];
 }
@@ -43,6 +51,19 @@ export function queryInputs(fixture: ComponentFixture<unknown>): HTMLInputElemen
 
 export function queryDropdownItems(fixture: ComponentFixture<unknown>): HTMLElement[] {
   return Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.dropdown-content span'));
+}
+
+export function queryDropdowns(fixture: ComponentFixture<unknown>): HTMLElement[] {
+  return Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.dropdown'));
+}
+
+export function queryDropdownItemsAt(
+  fixture: ComponentFixture<unknown>,
+  dropdownIndex: number,
+): HTMLElement[] {
+  const dropdown = queryDropdowns(fixture)[dropdownIndex];
+  expect(dropdown).toBeDefined();
+  return Array.from(dropdown.querySelectorAll('.dropdown-content span'));
 }
 
 export function typeIn(
