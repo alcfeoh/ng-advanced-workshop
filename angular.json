@@ -75,21 +75,14 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
             "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+            "buildTarget": "::development",
+            "include": [
+              "src/app/solution/solution1/solution1.component.spec.ts",
+              "src/app/solution/solution2/solution2.component.spec.ts"
+            ]
           }
         }
       }
