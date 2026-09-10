@@ -27,10 +27,9 @@ Here are the Angular concepts covered during this workshop:
   
 - #### Exercise 3
   + Signal Forms for the country filter: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code> on the text input
-  + Bridge Signal Forms → RxJS with <code>toObservable</code> so <code>withLatestFrom</code> can combine the filter with the countries stream
+  + <code>computed()</code> to filter countries from the Signal Form field and the countries resource
+  + Country → states with an <code>httpResource</code> whose URL/params depend on the selected country signal
   + Creating a custom pipe to format data
-  + <code>withLatestFrom</code> operator from RxJs
-  + How to combine multiple Observable streams into one
   + Using <code>innerHTML</code> to render dynamically generated HTML code
   + <code>inject()</code> instead of constructor DI
   

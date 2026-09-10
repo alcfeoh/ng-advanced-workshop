@@ -6,34 +6,29 @@
   <li>The filter should not be case-sensitive</li>
   <li>The matching portion of the country name should be rendered in <b>bold text</b>, for instance: <b>Ca</b>nada</li>
   <li>Use Signal Forms (<code>form()</code> from <code>@angular/forms/signals</code> and <code>[formField]</code>) to bind the country text input — do not use <code>FormControl</code></li>
-  <li>Keep the filtered list as an Observable: bridge the Signal Form field to RxJS with <code>toObservable</code>, then use <code>withLatestFrom</code> with the countries HTTP stream</li>
+  <li>Filter the country list with a <code>computed()</code> signal from the Signal Form field and the countries resource — do not use <code>toObservable</code> or <code>withLatestFrom</code></li>
   <li>Create a custom <code>highlight</code> pipe and bind it with <code>[innerHTML]</code> so the matching text is bold</li>
-  <li>Do not worry about applying the same behavior to the state dropdown for now. Just make sure that the state dropdown still works after your changes.</li>
+  <li>Load states with an <code>httpResource</code> whose URL/params depend on the selected country id signal. Do not worry about applying the same filter behavior to the state dropdown for now.</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/3">http://localhost:4200/solution/3</a> </h4>
 <hr>
   <h2>Result</h2>
-  @if (countries$ | async; as countries) {
+  @if (countries.hasValue()) {
     <div>
       <div class="dropdown">
         <input type="text" class="dropbtn" [formField]="countryForm.country" placeholder="Enter country name">
         <div class="dropdown-content">
-          @for (country of countries; track country.id) {
+          @for (country of countries.value(); track country.id) {
             <span (click)="updateStates(country)">{{country.description}}</span>
           }
         </div>
       </div>
     </div>
   }
-  @if (states$ | async; as states) {
-    <div>
-      <div class="dropdown">
-        <input type="text" class="dropbtn" [value]="state?.description" [disabled]="states.length == 0" placeholder="Enter your state">
-        <div class="dropdown-content">
-          @for (s of states; track s.id) {
-            <span (click)="state = s">{{s.description | titlecase}}</span>
-          }
-        </div>
+  <div>
+    <div class="dropdown">
+      <input type="text" class="dropbtn" [value]="state()?.description ?? ''" disabled placeholder="Enter your state">
+      <div class="dropdown-content">
       </div>
     </div>
-  }
+  </div>

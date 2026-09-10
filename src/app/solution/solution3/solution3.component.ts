@@ -1,18 +1,16 @@
-import { Component, inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
-import {Observable} from 'rxjs';
+import { Component, computed, inject, signal } from '@angular/core';
+import { httpResource } from '@angular/common/http';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
 import { form, FormField } from '@angular/forms/signals';
-import {map, withLatestFrom} from 'rxjs/operators';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { HighlightPipe } from './highlight.pipe';
 
 @Component({
     selector: 'app-solution3',
     templateUrl: './solution3.component.html',
     styleUrls: ['./solution3.component.css'],
-    imports: [FormField, AsyncPipe, TitleCasePipe, HighlightPipe]
+    imports: [FormField, TitleCasePipe, HighlightPipe]
 })
 export class Solution3Component {
 
@@ -21,19 +19,35 @@ export class Solution3Component {
   countryModel = signal({ country: '' });
   countryForm = form(this.countryModel);
 
-  // toObservable bridges the Signal Form field into RxJS so withLatestFrom can
-  // combine keystrokes with the countries HTTP stream (same lesson as valueChanges).
-  countries$: Observable<Country[]> = toObservable(this.countryForm.country().value).pipe(
-    withLatestFrom(this.service.getCountries()),
-    map(([userInput, countries]) =>
-      countries.filter(c => c.description.toLowerCase().indexOf(userInput.toLowerCase()) !== -1)
-    )
+  countries = this.service.countries;
+
+  filteredCountries = computed(() => {
+    const filter = this.countryForm.country().value().toLowerCase();
+    return this.countries.value().filter(
+      c => c.description.toLowerCase().indexOf(filter) !== -1
+    );
+  });
+
+  selectedCountryId = signal('');
+  state = signal<State | undefined>(undefined);
+
+  states = httpResource<State[]>(
+    () => {
+      const countryId = this.selectedCountryId();
+      return countryId
+        ? { url: 'http://localhost:3000/states', params: { countryCode: countryId } }
+        : undefined;
+    },
+    {
+      defaultValue: [] as State[],
+      parse: (value) =>
+        [...(value as State[])].sort((a, b) => (a.description > b.description ? 1 : -1)),
+    },
   );
-  states$: Observable<State[]>;
-  state: State;
 
   updateStates(country: Country) {
     this.countryForm.country().value.set(country.description);
-    this.states$ = this.service.getStatesFor(country.id);
+    this.selectedCountryId.set(country.id);
+    this.state.set(undefined);
   }
 }

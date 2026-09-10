@@ -39,11 +39,20 @@ describe('Solution3Component', () => {
     }
   });
 
-  it('does not list countries until the Signal Form filter emits after the HTTP stream arrives', async () => {
-    await flushCountries();
+  it('loads countries and lists them all while the filter is empty', async () => {
+    fixture.detectChanges();
 
     expect(queryDropdownItems(fixture)).toHaveLength(0);
-    expect(hostText(fixture)).not.toContain('France');
+    const countriesReq = httpTesting.expectOne(COUNTRIES_URL);
+    expect(countriesReq.request.method).toBe('GET');
+    httpTesting.expectNone((req) => req.url.includes('/states'));
+
+    await flushAndStabilize(fixture, countriesReq, COUNTRIES);
+
+    expect(queryDropdownItems(fixture).map((item) => item.textContent)).toEqual(
+      COUNTRIES.map((country) => country.description),
+    );
+    httpTesting.expectNone((req) => req.url.includes('/states'));
   });
 
   it('filters countries as the Signal Form text field updates and highlights the match', async () => {
@@ -73,7 +82,7 @@ describe('Solution3Component', () => {
     expect(queryDropdownItems(fixture)).toHaveLength(0);
   });
 
-  it('loads states after selecting a highlighted country and updates the Signal Form field', async () => {
+  it('loads states via httpResource after selecting a highlighted country and updates the Signal Form field', async () => {
     await flushCountries();
     typeFilter('fr');
 
@@ -83,10 +92,15 @@ describe('Solution3Component', () => {
     fixture.detectChanges();
 
     expect(component.countryForm.country().value()).toBe('France');
+    expect(component.selectedCountryId()).toBe('FR');
     expect(queryInputs(fixture)[0].value).toBe('France');
 
     const statesReq = httpTesting.expectOne(statesUrl('FR'));
     expect(statesReq.request.method).toBe('GET');
+    expect(
+      statesReq.request.params.get('countryCode') ??
+        new URL(statesReq.request.urlWithParams).searchParams.get('countryCode'),
+    ).toBe('FR');
     await flushAndStabilize(fixture, statesReq, US_STATES);
 
     expect(hostText(fixture)).toContain('New York');
@@ -98,15 +112,13 @@ describe('Solution3Component', () => {
     newYork!.click();
     fixture.detectChanges();
 
-    expect(component.state.description).toBe('New York');
+    expect(component.state()?.description).toBe('New York');
     expect(queryInputs(fixture)[1].value).toBe('New York');
   });
 
   async function flushCountries(): Promise<void> {
     fixture.detectChanges();
-    const countriesReq = httpTesting.expectOne(COUNTRIES_URL);
-    expect(countriesReq.request.method).toBe('GET');
-    await flushAndStabilize(fixture, countriesReq, COUNTRIES);
+    await flushAndStabilize(fixture, httpTesting.expectOne(COUNTRIES_URL), COUNTRIES);
   }
 
   function typeFilter(value: string): void {
