@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
 import { form, FormField } from '@angular/forms/signals';
@@ -16,7 +16,10 @@ export class Exercise3Component {
   private service = inject(CountryService);
 
   // Signal Forms model + FieldTree. Bind the country <input> with [formField].
-  countryModel = signal({ country: '' });
+  // Selecting a country is one write (selectedCountry). selectedCountryId is computed in the service.
+  countryModel = linkedSignal(() => ({
+    country: this.service.selectedCountry()?.description ?? '',
+  }));
   countryForm = form(this.countryModel);
 
   countries = this.service.countries;
@@ -25,11 +28,13 @@ export class Exercise3Component {
   // Filter with computed() from countryForm.country().value() + countries.value() (see solution 3).
   filteredCountries = computed(() => this.countries.value());
 
-  state = signal<State | undefined>(undefined);
+  // Reset the chosen state whenever the selected country changes (see solution 3).
+  state = linkedSignal({
+    source: () => this.service.selectedCountry(),
+    computation: () => undefined as State | undefined,
+  });
 
   updateStates(country: Country) {
-    this.countryForm.country().value.set(country.description);
-    this.service.selectedCountryId.set(country.id);
-    this.state.set(undefined);
+    this.service.selectedCountry.set(country);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import {Country, State} from './types';
 
@@ -7,7 +7,8 @@ import {Country, State} from './types';
 })
 export class CountryService {
 
-  selectedCountryId = signal('');
+  selectedCountry = signal<Country | undefined>(undefined);
+  selectedCountryId = computed(() => this.selectedCountry()?.id ?? '');
 
   countries = httpResource<Country[]>(() => 'http://localhost:3000/countries', {
     defaultValue: [] as Country[],

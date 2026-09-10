@@ -93,6 +93,7 @@ describe('Solution3Component', () => {
     fixture.detectChanges();
 
     expect(component.countryForm.country().value()).toBe('France');
+    expect(TestBed.inject(CountryService).selectedCountry()?.id).toBe('FR');
     expect(TestBed.inject(CountryService).selectedCountryId()).toBe('FR');
     expect(queryInputs(fixture)[0].value).toBe('France');
 
@@ -115,6 +116,20 @@ describe('Solution3Component', () => {
 
     expect(component.state()?.description).toBe('New York');
     expect(queryInputs(fixture)[1].value).toBe('New York');
+
+    typeFilter('united');
+    const unitedStates = queryDropdownItems(fixture).find(
+      (item) => item.textContent?.trim() === 'United States',
+    );
+    expect(unitedStates).toBeDefined();
+    unitedStates!.click();
+    fixture.detectChanges();
+
+    expect(component.state()).toBeUndefined();
+    expect(queryInputs(fixture)[1].value).toBe('');
+    expect(TestBed.inject(CountryService).selectedCountryId()).toBe('US');
+    await flushAndStabilize(fixture, httpTesting.expectOne(statesUrl('US')), US_STATES);
+    expect(component.countryForm.country().value()).toBe('United States');
   });
 
   async function flushCountries(): Promise<void> {

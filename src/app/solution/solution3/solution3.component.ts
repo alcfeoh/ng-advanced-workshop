@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
 import { form, FormField } from '@angular/forms/signals';
@@ -15,7 +15,10 @@ export class Solution3Component {
 
   private service = inject(CountryService);
 
-  countryModel = signal({ country: '' });
+  // Form text follows the selected country, but typing can still override it to filter.
+  countryModel = linkedSignal(() => ({
+    country: this.service.selectedCountry()?.description ?? '',
+  }));
   countryForm = form(this.countryModel);
 
   countries = this.service.countries;
@@ -28,11 +31,13 @@ export class Solution3Component {
     );
   });
 
-  state = signal<State | undefined>(undefined);
+  // Reset the chosen state whenever the selected country changes.
+  state = linkedSignal({
+    source: () => this.service.selectedCountry(),
+    computation: () => undefined as State | undefined,
+  });
 
   updateStates(country: Country) {
-    this.countryForm.country().value.set(country.description);
-    this.service.selectedCountryId.set(country.id);
-    this.state.set(undefined);
+    this.service.selectedCountry.set(country);
   }
 }
