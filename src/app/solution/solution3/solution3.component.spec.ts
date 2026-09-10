@@ -126,10 +126,12 @@ describe('Solution3Component', () => {
     fixture.detectChanges();
 
     expect(component.state()).toBeUndefined();
-    expect(queryInputs(fixture)[1].value).toBe('');
     expect(TestBed.inject(CountryService).selectedCountryId()).toBe('US');
     await flushAndStabilize(fixture, httpTesting.expectOne(statesUrl('US')), US_STATES);
     expect(component.countryForm.country().value()).toBe('United States');
+    const stateInput = queryInputs(fixture)[1];
+    expect(stateInput).toBeDefined();
+    expect(stateInput.value).toBe('');
   });
 
   async function flushCountries(): Promise<void> {
