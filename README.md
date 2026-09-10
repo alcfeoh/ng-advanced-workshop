@@ -26,11 +26,13 @@ Here are the Angular concepts covered during this workshop:
   + <code>ng-container</code> as an empty DOM wrapper for content to show/hide
   
 - #### Exercise 3
-  + <code>FormControl</code> and how to listen to form updates
+  + Signal Forms for the country filter: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code> on the text input
+  + Bridge Signal Forms → RxJS with <code>toObservable</code> so <code>withLatestFrom</code> can combine the filter with the countries stream
   + Creating a custom pipe to format data
   + <code>withLatestFrom</code> operator from RxJs
   + How to combine multiple Observable streams into one
   + Using <code>innerHTML</code> to render dynamically generated HTML code
+  + <code>inject()</code> instead of constructor DI
   
 - #### Exercise 4 
   + <code>switchMap</code> operator from RxJs

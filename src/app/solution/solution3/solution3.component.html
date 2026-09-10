@@ -2,13 +2,13 @@
 <h2>Result</h2>
 <div >
   <div class="dropdown">
-    <input type="text" class="dropbtn" [formControl]="countryControl"
+    <input type="text" class="dropbtn" [formField]="countryForm.country"
       placeholder="Enter country name" >
     @if (countries$ | async; as countries) {
       <div class="dropdown-content">
-        @for (country of countries; track country) {
+        @for (country of countries; track country.id) {
           <span (click)="updateStates(country)"
-            [innerHTML]="country.description | highlight: countryControl.value">
+            [innerHTML]="country.description | highlight: countryForm.country().value()">
           </span>
         }
       </div>
@@ -20,7 +20,7 @@
     <div class="dropdown">
       <input type="text" class="dropbtn" [value]="state?.description" [disabled]="states.length == 0" placeholder="Enter your state">
       <div class="dropdown-content">
-        @for (s of states; track s) {
+        @for (s of states; track s.id) {
           <span (click)="state = s">{{s.description | titlecase}}</span>
         }
       </div>
