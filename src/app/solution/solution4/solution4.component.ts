@@ -1,43 +1,60 @@
-import { Component } from '@angular/core';
-import {combineLatest, Observable, of, Subject} from 'rxjs';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import {Country, State} from './types';
 import {CountryService} from './country.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {map, switchMap} from 'rxjs/operators';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { form, FormField } from '@angular/forms/signals';
+import { TitleCasePipe } from '@angular/common';
 import { HighlightPipe } from '../solution3/highlight.pipe';
 
 @Component({
-    selector: 'app-solution3',
+    selector: 'app-solution4',
     templateUrl: './solution4.component.html',
     styleUrls: ['./solution4.component.css'],
-    imports: [ReactiveFormsModule, AsyncPipe, TitleCasePipe, HighlightPipe]
+    imports: [FormField, TitleCasePipe, HighlightPipe]
 })
 export class Solution4Component {
 
-  countries$: Observable<Country[]>;
-  currentCountry$ = new Subject<Country>();
-  states$: Observable<State[]>;
-  statesForCountry$: Observable<State[]> =  of([]);
-  state: State;
-  countryControl = new FormControl('');
-  stateControl = new FormControl('');
+  private service = inject(CountryService);
 
-  constructor(private service: CountryService) {
-    this.countries$ = combineLatest([this.countryControl.valueChanges, this.service.getCountries()]).pipe(
-      map(([userInput, countries]) => countries.filter(c => c.description.toLowerCase().indexOf(userInput.toLowerCase()) !== -1))
+  // Form text follows the selected country, but typing can still override it to filter.
+  countryModel = linkedSignal(() => ({
+    country: this.service.selectedCountry()?.description ?? '',
+  }));
+  countryForm = form(this.countryModel);
+
+  countries = this.service.countries;
+  states = this.service.states;
+
+  filteredCountries = computed(() => {
+    const filter = this.countryForm.country().value().toLowerCase();
+    return this.countries.value().filter(
+      c => c.description.toLowerCase().indexOf(filter) !== -1
     );
-    this.statesForCountry$ = this.currentCountry$.asObservable().pipe(
-      switchMap(cntry => this.service.getStatesFor(cntry.id))
+  });
+
+  // Reset the chosen state whenever the selected country changes.
+  selectedState = linkedSignal({
+    source: () => this.service.selectedCountry(),
+    computation: () => undefined as State | undefined,
+  });
+
+  // Form text follows the selected state, but typing can still override it to filter.
+  stateModel = linkedSignal(() => ({
+    state: this.selectedState()?.description ?? '',
+  }));
+  stateForm = form(this.stateModel);
+
+  filteredStates = computed(() => {
+    const filter = this.stateForm.state().value().toLowerCase();
+    return this.states.value().filter(
+      s => s.description.toLowerCase().indexOf(filter) !== -1
     );
-    this.states$ = combineLatest([this.stateControl.valueChanges, this.statesForCountry$]).pipe(
-      map(([userInput, states]) => states.filter(c => c.description.toLowerCase().indexOf(userInput.toLowerCase()) !== -1))
-    );
-  }
+  });
 
   updateStates(country: Country) {
-    this.countryControl.setValue(country.description);
-    this.stateControl.setValue('');
-    this.currentCountry$.next(country);
+    this.service.selectedCountry.set(country);
+  }
+
+  updateState(state: State) {
+    this.selectedState.set(state);
   }
 }

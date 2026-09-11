@@ -5,37 +5,39 @@
   <li>If the selected country is Canada, when the user types 'Al' in the state input then only 'Alberta' should show up in the list</li>
   <li>The filter should not be case-sensitive</li>
   <li>The matching portion of the state/province name should be rendered in <b>bold text</b>, for instance: <b>Al</b>berta</li>
-  <li>Do not worry about refactoring the code for now. Just make sure that both countries and states can be changed and that everything works.</li>
+  <li>Use Signal Forms (<code>form()</code> from <code>@angular/forms/signals</code> and <code>[formField]</code>) to bind the state text input — do not use <code>FormControl</code></li>
+  <li>Filter the state list with a <code>computed()</code> signal from the Signal Form field and the states resource (no <code>async</code> pipe, no <code>combineLatest</code> / <code>switchMap</code>)</li>
+  <li>Reuse the <code>highlight</code> pipe with <code>[innerHTML]</code> so the matching text is bold</li>
+  <li>Selecting a state should be <b>one write</b> (<code>selectedState</code>). Follow that selection with <code>linkedSignal</code> for the filter text, and reset the chosen state when the country changes — do not use <code>Subject</code> or extra imperative <code>set</code> calls</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/4">http://localhost:4200/solution/4</a> </h4>
 <h4>Hint</h4>
 <p>
-  You might want to take a look at the following RxJs operators: <code>switchMap</code> and <code>combineLatest</code>
+  The country dropdown already uses Signal Forms + <code>computed()</code> + <code>linkedSignal</code>. Apply the same pattern to the state dropdown (see solution 4).
 </p>
 <hr>
   <h2>Result</h2>
-  <div >
-    <div class="dropdown">
-      <input type="text" class="dropbtn" [formControl]="countryControl"
-        placeholder="Enter country name" >
-      @if (countries$ | async; as countries) {
+  @if (countries.hasValue()) {
+    <div>
+      <div class="dropdown">
+        <input type="text" class="dropbtn" [formField]="countryForm.country" placeholder="Enter country name">
         <div class="dropdown-content">
-          @for (country of countries; track country) {
+          @for (country of filteredCountries(); track country.id) {
             <span (click)="updateStates(country)"
-              [innerHTML]="country.description | highlight: countryControl.value">
+              [innerHTML]="country.description | highlight: countryForm.country().value()">
             </span>
           }
         </div>
-      }
+      </div>
     </div>
-  </div>
-  @if (states$ | async; as states) {
+  }
+  @if (states.hasValue() && states.value().length > 0) {
     <div>
       <div class="dropdown">
-        <input type="text" class="dropbtn" [value]="$safeNavigationMigration(state?.description)" [disabled]="states.length == 0" placeholder="Enter your state">
+        <input type="text" class="dropbtn" [formField]="stateForm.state" placeholder="Enter your state">
         <div class="dropdown-content">
-          @for (s of states; track s) {
-            <span (click)="state = s">{{s.description | titlecase}}</span>
+          @for (s of filteredStates(); track s.id) {
+            <span (click)="updateState(s)">{{s.description | titlecase}}</span>
           }
         </div>
       </div>

@@ -1,28 +1,31 @@
 <h2>Solution 4</h2>
 <h2>Result</h2>
-<div >
-  <div class="dropdown">
-    <input type="text" class="dropbtn" [formControl]="countryControl"
-      placeholder="Enter country name" >
-    <div class="dropdown-content">
-      @for (country of countries$ | async; track country) {
-        <span (click)="updateStates(country)"
-          [innerHTML]="country.description | highlight: countryControl.value">
-        </span>
-      }
+@if (countries.hasValue()) {
+  <div>
+    <div class="dropdown">
+      <input type="text" class="dropbtn" [formField]="countryForm.country"
+        placeholder="Enter country name" >
+      <div class="dropdown-content">
+        @for (country of filteredCountries(); track country.id) {
+          <span (click)="updateStates(country)"
+            [innerHTML]="country.description | highlight: countryForm.country().value()">
+          </span>
+        }
+      </div>
     </div>
   </div>
-</div>
-<div >
-  <div class="dropdown">
-    <input type="text" class="dropbtn" [formControl]="stateControl"
-      placeholder="Enter your state">
-    <div class="dropdown-content">
-      @for (s of states$ | async; track s) {
-        <span (click)="stateControl.setValue(s.description)"
-          [innerHTML]="s.description | titlecase | highlight: stateControl.value">
-        </span>
-      }
+}
+@if (states.hasValue() && states.value().length > 0) {
+  <div>
+    <div class="dropdown">
+      <input type="text" class="dropbtn" [formField]="stateForm.state" placeholder="Enter your state">
+      <div class="dropdown-content">
+        @for (s of filteredStates(); track s.id) {
+          <span (click)="updateState(s)"
+            [innerHTML]="s.description | titlecase | highlight: stateForm.state().value()">
+          </span>
+        }
+      </div>
     </div>
   </div>
-</div>
+}
