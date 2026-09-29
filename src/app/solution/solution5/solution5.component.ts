@@ -24,6 +24,6 @@ export class Solution5Component {
   // Reset the chosen state whenever the selected country changes.
   selectedState = linkedSignal({
     source: () => this.selectedCountry(),
-    computation: () => undefined as State | undefined,
+    computation: (): State | undefined => undefined,
   });
 }

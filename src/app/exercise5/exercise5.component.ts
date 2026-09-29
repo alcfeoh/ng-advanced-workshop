@@ -42,7 +42,7 @@ export class Exercise5Component {
   // Reset the chosen state whenever the selected country changes.
   selectedState = linkedSignal({
     source: () => this.selectedCountry(),
-    computation: () => undefined as State | undefined,
+    computation: (): State | undefined => undefined,
   });
 
   // Form text follows the selected state, but typing can still override it to filter.
