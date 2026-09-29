@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {timer} from 'rxjs';
+import { timer } from 'rxjs';
 import { StateButtonComponent } from './state-button.component';
 
 @Component({
@@ -10,6 +10,7 @@ import { StateButtonComponent } from './state-button.component';
 })
 export class Solution7Component {
 
-  action$ = timer(2000);
+  /** Cold demo action: each accepted click emits once after 2 seconds. */
+  readonly action$ = timer(2000);
 
 }

@@ -1,9 +1,9 @@
-@if (state == 'initial' ) {
+@if (phase() === 'idle') {
   <ng-content select="[default]"></ng-content>
 }
-@if (state == 'working') {
+@if (phase() === 'working') {
   <ng-content select="[working]"></ng-content>
 }
-@if (state == 'done') {
+@if (phase() === 'done') {
   <ng-content select="[done]"></ng-content>
 }
