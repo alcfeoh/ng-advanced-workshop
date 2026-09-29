@@ -13,6 +13,8 @@
     "src/app/solution/solution3/solution3.component.spec.ts",
     "src/app/solution/solution4/solution4.component.spec.ts",
     "src/app/solution/solution5/solution5.component.spec.ts",
+    "src/app/solution/solution6/solution6.component.spec.ts",
+    "src/app/solution/solution6/state-button.directive.spec.ts",
     "src/app/solution/test-utils.ts",
     "src/**/*.d.ts"
   ],

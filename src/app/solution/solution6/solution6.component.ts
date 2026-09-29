@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {timer} from 'rxjs';
+import { timer } from 'rxjs';
 import { StateButtonDirective } from './state-button.directive';
 
 @Component({
@@ -10,7 +10,7 @@ import { StateButtonDirective } from './state-button.directive';
 })
 export class Solution6Component {
 
-  action$ = timer(2000);
-
+  /** Cold demo action: each accepted click emits once after 2 seconds. */
+  readonly action$ = timer(2000);
 
 }
