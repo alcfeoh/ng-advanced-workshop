@@ -50,9 +50,12 @@ Here are the Angular concepts covered during this workshop:
     + <code>httpResource</code> for countries and states, and <code>inject()</code> instead of constructor DI
     
 - #### Exercise 6
-    + Creating custom directives
-    + Using custom CSS selectors with a directive
-    + Using <code>HostBinding</code> and <code>HostListener</code>
+    + Creating a custom directive that works on any clickable element
+    + Custom attribute selector (<code>[action][textWhenDone]</code>) so the directive applies only when it is configured
+    + <code>input()</code> for the action (<code>Observable</code> or <code>Promise</code>) and the idle, working, and done labels
+    + Signal-driven host text: a <code>computed()</code> label bound with the <code>host</code> option (<code>[textContent]</code>)
+    + Host click listener in that same <code>host</code> option, instead of <code>@HostListener</code>
+    + One-shot action with <code>take(1)</code>; further clicks are ignored while it is working, and <code>takeUntilDestroyed</code> unsubscribes if the host is destroyed
     
 - #### Exercise 7
     + Multi-slot content projection

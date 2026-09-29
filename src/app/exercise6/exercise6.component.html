@@ -3,10 +3,11 @@
 <img src="assets/exercise6.gif" />
 <ol>
   <li>For instance, I could use that solution on a button with 3 possible text labels: <code>Save</code>, <code>Saving...</code>, and <code>Saved!</code></li>
-  <li>An <code>action</code> would be passed as an <code>Observable</code>. When the button is clicked, the action is triggered and the button text changes to <code>Saving...</code></li>
-  <li>Once the <code>Observable</code> returns a value, the button text changes to <code>Saved!</code></li>
-  <li>Try to make a reusable solution where everything can be customized, from the action to the text for the 3 states</li>
-  <li>Your solution should work on any clickable HTML element, not just buttons</li>
+  <li>Pass an <code>action</code> (<code>Observable</code> or <code>Promise</code>) with <code>input()</code>. On click, run it and change the label to the working text</li>
+  <li>When that action emits or resolves, change the label to the done text</li>
+  <li>Keep the idle, working, and done labels customizable, and drive the host text from a signal</li>
+  <li>Use a custom attribute selector so the directive is only applied when it is configured. Bind the host text and the click with the <code>host</code> option (host binding + host listener), not <code>@HostBinding</code> / <code>@HostListener</code></li>
+  <li>It has to work on any clickable element, not just buttons. Ignore another click while the action is still running, and do not leave a subscription behind (<code>take(1)</code> or <code>firstValueFrom</code>)</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/6">http://localhost:4200/solution/6</a> </h4>
 <hr>
