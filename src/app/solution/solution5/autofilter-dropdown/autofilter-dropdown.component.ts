@@ -1,48 +1,41 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {DropdownOption} from '../types';
-import { AsyncPipe } from '@angular/common';
+import { Component, computed, input, linkedSignal, model } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
+import { DropdownOption } from '../types';
 import { HighlightPipe } from '../../solution3/highlight.pipe';
 
 @Component({
     selector: 'app-autofilter-dropdown',
     templateUrl: './autofilter-dropdown.component.html',
     styleUrls: ['./autofilter-dropdown.component.css'],
-    imports: [ReactiveFormsModule, AsyncPipe, HighlightPipe]
+    imports: [FormField, HighlightPipe]
 })
-export class AutofilterDropdownComponent<T extends DropdownOption> implements OnInit {
+export class AutofilterDropdownComponent<T extends DropdownOption> {
 
-  @Input()
-  entries$: Observable<T[]>;
+  /** Option list. Parent passes a signal/resource value, not an Observable. */
+  entries = input<T[]>([]);
 
-  @Input()
-  placeholder: string;
+  placeholder = input('');
 
-  @Input()
-  set selection(entry: T) {
-    if (entry) {
-      this.entryControl.setValue(entry.description);
-    } else {
-      this.entryControl.setValue('');
-    }
-  }
+  /**
+   * Banana-in-a-box [(selection)]. model() is the [selection] input
+   * and the (selectionChange) output.
+   */
+  selection = model<T | undefined>(undefined);
 
-  @Output()
-  selectionChange = new EventEmitter<T>();
+  // Form text follows the selection, but typing can still override it to filter.
+  textModel = linkedSignal(() => ({
+    text: this.selection()?.description ?? '',
+  }));
+  textForm = form(this.textModel);
 
-  filteredEntries$: Observable<T[]>;
-  entryControl = new FormControl<string>('');
-
-  ngOnInit() {
-    this.filteredEntries$ = combineLatest([this.entryControl.valueChanges, this.entries$]).pipe(
-      map(([userInput, entries]) => entries.filter(c => c.description.toLowerCase().indexOf(userInput.toLowerCase()) !== -1))
+  filteredEntries = computed(() => {
+    const filter = this.textForm.text().value().toLowerCase();
+    return this.entries().filter(
+      entry => entry.description.toLowerCase().indexOf(filter) !== -1
     );
-  }
+  });
 
   newSelection(entry: T) {
-    this.entryControl.setValue(entry.description);
-    this.selectionChange.emit(entry);
+    this.selection.set(entry);
   }
 }

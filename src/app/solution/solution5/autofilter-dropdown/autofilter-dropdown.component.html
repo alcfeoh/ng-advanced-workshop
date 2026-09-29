@@ -1,13 +1,11 @@
 <div class="dropdown">
-  <input type="text" class="dropbtn" [formControl]="entryControl"
-    [placeholder]="placeholder" >
-  @if (filteredEntries$ | async; as entries) {
-    <div class="dropdown-content">
-      @for (entry of entries; track entry) {
-        <span (click)="newSelection(entry)"
-          [innerHTML]="entry.description | highlight: entryControl.value">
-        </span>
-      }
-    </div>
-  }
+  <input type="text" class="dropbtn" [formField]="textForm.text"
+    [placeholder]="placeholder()" >
+  <div class="dropdown-content">
+    @for (entry of filteredEntries(); track entry.description) {
+      <span (click)="newSelection(entry)"
+        [innerHTML]="entry.description | highlight: textForm.text().value()">
+      </span>
+    }
+  </div>
 </div>

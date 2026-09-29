@@ -2,41 +2,40 @@
 <h3>Your mission is to refactor our two dropdowns code into one component</h3>
 <img src="assets/exercise5.gif" />
 <ol>
-  <li>The code for both our country and state dropdowns is very similar</li>
-  <li>Create a component that refactors the behavior of those dropdowns in one single reusable component</li>
-  <li>Then use two instances of that component, one for country selection, one for state selection</li>
-  <li>Render both currently selected <code>country</code> and <code>state</code> as JSON below the dropdowns</li>
+  <li>The Signal Forms code for both our country and state dropdowns is very similar</li>
+  <li>Create one reusable component for that typeahead: <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code>, and a <code>computed()</code> filter — do not use <code>FormControl</code>, <code>combineLatest</code>, or the <code>async</code> pipe</li>
+  <li>Then use two instances of that component, one for country selection, one for state selection. Pass the list with <code>input()</code> and the current choice with banana-in-a-box <code>[(selection)]</code> (<code>model()</code>, or <code>input()</code> plus an <code>output()</code> named <code>selectionChange</code>)</li>
+  <li>Render both currently selected <code>country</code> and <code>state</code> as JSON below the dropdowns. Changing the country should clear the selected state</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/5">http://localhost:4200/solution/5</a> </h4>
 <hr>
   <h2>Result</h2>
-  <div >
-    <div class="dropdown">
-      <input type="text" class="dropbtn" [formControl]="countryControl"
-        placeholder="Enter country name" >
-      @if (countries$ | async; as countries) {
+  @if (countries.hasValue()) {
+    <div>
+      <div class="dropdown">
+        <input type="text" class="dropbtn" [formField]="countryForm.country"
+          placeholder="Enter country name" >
         <div class="dropdown-content">
-          @for (country of countries; track country) {
+          @for (country of filteredCountries(); track country.id) {
             <span (click)="updateStates(country)"
-              [innerHTML]="country.description | highlight: countryControl.value">
+              [innerHTML]="country.description | highlight: countryForm.country().value()">
             </span>
           }
         </div>
-      }
+      </div>
     </div>
-  </div>
-  <div >
-    <div class="dropdown">
-      <input type="text" class="dropbtn" [formControl]="stateControl"
-        placeholder="Enter your state">
-      @if (states$ | async; as states) {
+  }
+  @if (states.hasValue() && states.value().length > 0) {
+    <div>
+      <div class="dropdown">
+        <input type="text" class="dropbtn" [formField]="stateForm.state" placeholder="Enter your state">
         <div class="dropdown-content">
-          @for (s of states; track s) {
-            <span (click)="stateControl.setValue(s.description)"
-              [innerHTML]="s.description | titlecase | highlight: stateControl.value">
+          @for (s of filteredStates(); track s.id) {
+            <span (click)="updateState(s)"
+              [innerHTML]="s.description | titlecase | highlight: stateForm.state().value()">
             </span>
           }
         </div>
-      }
+      </div>
     </div>
-  </div>
+  }
