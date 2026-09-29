@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import {Observable, of, Subject} from 'rxjs';
-import {Country, State} from './types';
+import { Component, inject, linkedSignal } from '@angular/core';
+import {State} from './types';
 import {CountryService} from './country.service';
-import {switchMap} from 'rxjs/operators';
 import { AutofilterDropdownComponent } from './autofilter-dropdown/autofilter-dropdown.component';
 import { JsonPipe } from '@angular/common';
 
@@ -14,23 +12,18 @@ import { JsonPipe } from '@angular/common';
 })
 export class Solution5Component {
 
-  countries$: Observable<Country[]>;
-  currentCountry$ = new Subject<Country>();
-  statesForCountry$: Observable<State[]> =  of([]);
-  country: Country;
-  state: State;
+  private service = inject(CountryService);
 
-  constructor(private service: CountryService) {
-    this.countries$ = this.service.getCountries();
-    this.statesForCountry$ = this.currentCountry$.asObservable().pipe(
-      switchMap(cntry => this.service.getStatesFor(cntry.id))
-    );
-  }
+  countries = this.service.countries;
+  states = this.service.states;
 
-  updateStates(country: Country) {
-    this.country = country;
-    this.state = null;
-    this.currentCountry$.next(country);
-  }
+  // One write: the country dropdown's [(selection)] updates this signal,
+  // which is also what the states httpResource reads.
+  selectedCountry = this.service.selectedCountry;
 
+  // Reset the chosen state whenever the selected country changes.
+  selectedState = linkedSignal({
+    source: () => this.selectedCountry(),
+    computation: (): State | undefined => undefined,
+  });
 }

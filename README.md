@@ -43,9 +43,11 @@ Here are the Angular concepts covered during this workshop:
   + <code>inject()</code> instead of constructor DI
   
 - #### Exercise 5
-    + Refactoring HTML templates and TypeScript code into reusable components
-    + Creating custom 2-way bindings with the <code>[()]</code> syntax
-    + Using <code>Input</code> and <code>Output</code> for component communication
+    + Refactoring the country and state typeaheads into one reusable component
+    + Signal Forms inside that component: <code>linkedSignal</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code>, and <code>computed()</code> to filter
+    + Custom two-way binding with the <code>[()]</code> syntax via <code>model()</code> (or <code>input()</code> + <code>output()</code> named <code>selectionChange</code>)
+    + <code>input()</code> for the option list; selecting a country clears the selected state
+    + <code>httpResource</code> for countries and states, and <code>inject()</code> instead of constructor DI
     
 - #### Exercise 6
     + Creating custom directives
