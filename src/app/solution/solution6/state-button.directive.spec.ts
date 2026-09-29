@@ -1,4 +1,5 @@
-import { Component, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 
@@ -11,28 +12,28 @@ import { StateButtonDirective } from './state-button.directive';
       <button
         id="save"
         type="button"
-        [action]="action"
-        [defaultText]="defaultText"
-        [textWhenWorking]="textWhenWorking"
-        [textWhenDone]="textWhenDone"
+        [action]="action()"
+        [defaultText]="defaultText()"
+        [textWhenWorking]="textWhenWorking()"
+        [textWhenDone]="textWhenDone()"
       ></button>
       <a
         id="link"
         href="#"
-        [action]="action"
+        [action]="action()"
         defaultText="Save from a link"
         textWhenWorking="Saving..."
         textWhenDone="Saved!"
       ></a>
-      <button id="defaults" type="button" [action]="action" textWhenDone="Finished"></button>
+      <button id="defaults" type="button" [action]="action()" textWhenDone="Finished"></button>
       <button id="plain" type="button">Untouched</button>
     `,
 })
 class StateButtonHarnessComponent {
-  action: Observable<unknown> | Promise<unknown> = new Subject<unknown>();
-  defaultText = 'Save';
-  textWhenWorking = 'Saving...';
-  textWhenDone = 'Saved!';
+  readonly action = signal<Observable<unknown> | Promise<unknown>>(new Subject<unknown>());
+  readonly defaultText = signal('Save');
+  readonly textWhenWorking = signal('Saving...');
+  readonly textWhenDone = signal('Saved!');
 }
 
 function trackSubscriptions<T>(source: Observable<T>): { tracked$: Observable<T>; active: () => number } {
@@ -90,7 +91,7 @@ describe('StateButtonDirective', () => {
     expect(element('#save').textContent).toBe('Save');
     expect(element('#link').textContent).toBe('Save from a link');
 
-    harness.defaultText = 'Store';
+    harness.defaultText.set('Store');
     fixture.detectChanges();
 
     expect(element('#save').textContent).toBe('Store');
@@ -99,7 +100,7 @@ describe('StateButtonDirective', () => {
 
   it('uses the built-in idle and working labels when those inputs are omitted', () => {
     const subject = new Subject<unknown>();
-    harness.action = subject;
+    harness.action.set(subject);
     fixture.detectChanges();
 
     const defaults = element('#defaults');
@@ -124,14 +125,14 @@ describe('StateButtonDirective', () => {
 
   it('switches to the working label on click and the done label when the action emits', () => {
     const subject = new Subject<string>();
-    harness.action = subject;
+    harness.action.set(subject);
     fixture.detectChanges();
 
     click('#save');
     expect(element('#save').textContent).toBe('Saving...');
     expect(element('#link').textContent).toBe('Save from a link');
 
-    harness.textWhenWorking = 'Please wait';
+    harness.textWhenWorking.set('Please wait');
     fixture.detectChanges();
     expect(element('#save').textContent).toBe('Please wait');
 
@@ -153,7 +154,7 @@ describe('StateButtonDirective', () => {
   it('ignores a second click while working and keeps a single subscription', () => {
     const subject = new Subject<string>();
     const { tracked$, active } = trackSubscriptions(subject);
-    harness.action = tracked$;
+    harness.action.set(tracked$);
     fixture.detectChanges();
 
     click('#save');
@@ -174,7 +175,7 @@ describe('StateButtonDirective', () => {
   it('unsubscribes when the host is destroyed before the action emits', () => {
     const subject = new Subject<string>();
     const { tracked$, active } = trackSubscriptions(subject);
-    harness.action = tracked$;
+    harness.action.set(tracked$);
     fixture.detectChanges();
 
     click('#save');
@@ -189,7 +190,7 @@ describe('StateButtonDirective', () => {
   it('runs the action again after it has finished', () => {
     const subject = new Subject<string>();
     const { tracked$, active } = trackSubscriptions(subject);
-    harness.action = tracked$;
+    harness.action.set(tracked$);
     fixture.detectChanges();
 
     click('#save');
@@ -210,9 +211,9 @@ describe('StateButtonDirective', () => {
 
   it('accepts a Promise and shows the done label when it resolves', async () => {
     let resolveAction!: (value: string) => void;
-    harness.action = new Promise<string>((resolve) => {
+    harness.action.set(new Promise<string>((resolve) => {
       resolveAction = resolve;
-    });
+    }));
     fixture.detectChanges();
 
     click('#save');
@@ -227,7 +228,7 @@ describe('StateButtonDirective', () => {
 
   it('returns to the idle label when the action errors', () => {
     const subject = new Subject<string>();
-    harness.action = subject;
+    harness.action.set(subject);
     fixture.detectChanges();
 
     click('#save');
@@ -239,7 +240,7 @@ describe('StateButtonDirective', () => {
     expect(element('#save').textContent).toBe('Save');
 
     const retry = new Subject<string>();
-    harness.action = retry;
+    harness.action.set(retry);
     fixture.detectChanges();
     click('#save');
     expect(element('#save').textContent).toBe('Saving...');

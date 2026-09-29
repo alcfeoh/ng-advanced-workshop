@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { Solution6Component } from './solution6.component';
@@ -15,6 +15,7 @@ describe('Solution6Component', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     TestBed.resetTestingModule();
   });
 
@@ -53,54 +54,57 @@ describe('Solution6Component', () => {
     expect(fixture.componentInstance.action$).toBeTruthy();
   });
 
-  it('moves the button through Saving... to Saved! and ignores a second click while working', fakeAsync(() => {
+  it('moves the button through Saving... to Saved! and ignores a second click while working', async () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
 
     click('button');
     expect(button().textContent).toBe('Saving...');
     expect(link().textContent).toBe('Save from a link');
 
-    tick(1500);
+    await vi.advanceTimersByTimeAsync(1500);
     click('button');
     expect(button().textContent).toBe('Saving...');
 
-    tick(500);
+    await vi.advanceTimersByTimeAsync(500);
     fixture.detectChanges();
     expect(button().textContent).toBe('Saved!');
     expect(link().textContent).toBe('Save from a link');
-  }));
+  });
 
-  it('runs the same demo action on a link', fakeAsync(() => {
+  it('runs the same demo action on a link', async () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
 
     click('a');
     expect(link().textContent).toBe('Saving...');
     expect(button().textContent).toBe('Save');
 
-    tick(2000);
+    await vi.advanceTimersByTimeAsync(2000);
     fixture.detectChanges();
 
     expect(link().textContent).toBe('Saved!');
     expect(button().textContent).toBe('Save');
-  }));
+  });
 
-  it('starts a new timer after the action has finished', fakeAsync(() => {
+  it('starts a new timer after the action has finished', async () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
 
     click('button');
-    tick(2000);
+    await vi.advanceTimersByTimeAsync(2000);
     fixture.detectChanges();
     expect(button().textContent).toBe('Saved!');
 
     click('button');
     expect(button().textContent).toBe('Saving...');
 
-    tick(1999);
+    await vi.advanceTimersByTimeAsync(1999);
     fixture.detectChanges();
     expect(button().textContent).toBe('Saving...');
 
-    tick(1);
+    await vi.advanceTimersByTimeAsync(1);
     fixture.detectChanges();
     expect(button().textContent).toBe('Saved!');
-  }));
+  });
 });
