@@ -14,9 +14,7 @@ Here are the Angular concepts covered during this workshop:
 - #### Exercise 1 
   + Signal Forms: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code> on the country dropdown, and FieldTree values (e.g. <code>countryForm.countryId().value()</code>)
   + <code>async</code> pipe and the no-subscription pattern
-  + Template microsyntax variables for structural directives
-  + Template reference variables (hashtag syntax)
-  + <code>tap</code> operator from RxJs
+  + Template microsyntax for structural directives: <code>@if</code> (with <code>as</code> alias) and <code>@for</code>
   
 - #### Exercise 2
   + Signal Forms for the country and state dropdowns: <code>signal(...)</code> model, <code>form()</code> from <code>@angular/forms/signals</code>, <code>[formField]</code>, and FieldTree values
