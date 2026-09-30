@@ -58,8 +58,11 @@ Here are the Angular concepts covered during this workshop:
     + One-shot action with <code>take(1)</code>; further clicks are ignored while it is working, and <code>takeUntilDestroyed</code> unsubscribes if the host is destroyed
     
 - #### Exercise 7
-    + Multi-slot content projection
-    + Creating a highly reusable and customizable component
+    + Multi-slot content projection with <code>ng-content</code> (<code>[default]</code>, <code>[working]</code>, <code>[done]</code>) so each phase renders custom HTML
+    + A reusable component whose visible phase is a <code>signal()</code> (<code>idle</code>, <code>working</code>, <code>done</code>)
+    + <code>input()</code> for the action (<code>Observable</code> or <code>Promise</code>)
+    + Host click listener in the component <code>host</code> option, instead of <code>@HostListener</code>
+    + One-shot action with <code>take(1)</code>; further clicks are ignored while it is working, and <code>takeUntilDestroyed</code> unsubscribes if the host is destroyed
 
 
    

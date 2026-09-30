@@ -2,15 +2,16 @@
 <h3>Your mission is to customize the previous solution even further by being able to provide three different HTML elements for every single state</h3>
 <img src="assets/exercise7.gif" />
 <ol>
-  <li>For instance, I could use that solution to initially display a <code>Save</code> button</li>
-  <li>Then the button becomes a spinner image when clicked</li>
-  <li>Finally, the element becomes a disabled button with a different background color upon completion of the action</li>
-  <li>Your solution should work on any clickable HTML element, and the rendered states should be fully customizable (template, style, etc.)</li>
-  <li>A sample spinner image can be used to test your intermediate state: <code>assets/loader.gif</code></li>
+  <li>For instance, I could use that solution to initially display a <code>Save</code> button (or any custom markup in the idle slot)</li>
+  <li>Pass an <code>action</code> (<code>Observable</code> or <code>Promise</code>) with <code>input()</code>. On click, show a working slot such as the spinner <code>assets/loader.gif</code></li>
+  <li>When that action emits or resolves, show a done slot (for example a button that looks finished, or <code>Done!</code>)</li>
+  <li>Project each phase with multi-slot <code>ng-content</code> (<code>[default]</code>, <code>[working]</code>, <code>[done]</code>) and choose the visible slot with a phase <code>signal()</code> (<code>idle</code>, <code>working</code>, <code>done</code>)</li>
+  <li>Listen for the click with the component <code>host</code> option, not <code>@HostListener</code>. Ignore another click while the phase is working, and end the action with <code>take(1)</code> and <code>takeUntilDestroyed</code></li>
+  <li>It has to work on any clickable projected element, and each state should be fully customizable HTML</li>
 </ol>
 <h4>You can take a look at the expected result here: <a routerLink="/solution/7">http://localhost:4200/solution/7</a> </h4>
 <hr>
 <h2>Result</h2>
 <button>Save</button>
 <br> <br>
-<a href="javascript:">Save from a link</a>
+<a href="javascript:void(0)">Save from a link</a>
